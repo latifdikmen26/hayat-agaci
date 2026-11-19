@@ -604,7 +604,7 @@ input.name{display:block;width:100%;margin-top:6px;padding:9px 12px;background:#
 .orow2{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid rgba(201,168,116,.3);border-radius:6px;background:rgba(0,0,0,.2)}
 .oic{font-size:20px;width:28px;text-align:center}.oad{flex:0 0 220px;font:600 14px 'Cinzel',serif}.orow2 input[type=range]{flex:1;accent-color:var(--c-yesil);height:6px}.rv{flex:0 0 90px;text-align:right}
 .chk{width:30px;height:30px;border-radius:5px;border:2px solid var(--c-altin);background:rgba(0,0,0,.35);color:#9be07f;font-size:18px;cursor:pointer}
-.keys{display:grid;grid-template-columns:1fr 1fr;gap:6px}.keys>div{display:flex;gap:10px;align-items:center;padding:6px 8px;border:1px solid rgba(201,168,116,.25);border-radius:6px;background:rgba(0,0,0,.18)}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:4px}.keys>div{display:flex;gap:10px;align-items:center;padding:2px 6px;border:1px solid rgba(201,168,116,.25);border-radius:6px;background:rgba(0,0,0,.18)}
 kbd{min-width:110px;font:600 13px Georgia,serif;padding:3px 8px;border:1px solid var(--c-altin);border-bottom-width:3px;border-radius:5px;background:#120c06;text-align:center}
 .btn.arm{background:#7a2a20!important}
 @media(max-width:980px){.kgrid,.egrid{grid-template-columns:1fr 1fr}.kgrid>section:last-child,.egrid>section:last-child{grid-column:1/-1}.mtab{font-size:12px;letter-spacing:.02em}}
@@ -616,6 +616,8 @@ kbd{min-width:110px;font:600 13px Georgia,serif;padding:3px 8px;border:1px solid
 .shead .badge{font:600 14px 'Cinzel',serif;padding:7px 14px;border:1px solid var(--c-yesil);border-radius:6px;background:linear-gradient(#4f7a32,#35571f);color:#fffbe8;white-space:nowrap}
 .mfoot .btn{min-width:160px;padding:10px 18px}
 .stage.gamestage .wrap:has(.viewport.td){max-width:none}
+@media(min-width:1400px) and (min-height:860px){.stage.gamestage .wrap:not(:has(.viewport.td)){zoom:1.15}}
+@media(min-width:1700px) and (min-height:980px){.stage.gamestage .wrap:not(:has(.viewport.td)){zoom:1.32}.overlay>*{zoom:1.25}}
 .gamestage:has(.viewport.td){padding:8px}
 .game:has(.viewport.td){position:relative}
 .viewport.td{height:calc(100vh - 16px)!important;border-radius:8px}
@@ -898,7 +900,7 @@ const FOES={
  alfa:{ad:'Alfa Kurt',sp:'kurt',type:'elit',role:'Saldırgan',el:'kok',lv:1,dodge:5,bleed:35,corrupt:1},
  goblin:{ad:'Goblin',sp:'goblin',type:'normal',role:'Saldırgan',el:'sukun',lv:1},
  reis:{ad:'Goblin Reisi',sp:'reis',type:'mini',role:'Savunmacı',el:'sukun',lv:1,tele:1,phase:1},
- ayi:{ad:'Kökçürük Ayı',sp:'ayi',type:'mini',role:'Saldırgan',el:'kok',lv:3,tele:1,phase:1,bleed:30,corrupt:1,hpK:1.15,dmgK:1.1,soloK:.85,teleTxt:'arka ayakları üstüne kalkıp kükrüyor!'}
+ ayi:{ad:'Kökçürük Ayı',sp:'ayi',type:'mini',role:'Saldırgan',el:'kok',lv:3,tele:1,phase:1,bleed:30,corrupt:1,hpK:1.02,dmgK:1.1,soloK:.85,teleTxt:'arka ayakları üstüne kalkıp kükrüyor!'}
 };
 
 /* ---------- eşyalar ---------- */
@@ -1080,7 +1082,7 @@ function prevHTML(){const w=heroW(),d=WSD[w];return `<div class="cprev"><div cla
 function statHTML(){const tmp={...G,cl:{[G.cls]:{lv:1,cp:0}},eq:{}};const C=CLASSES[G.cls];
  C.kit.forEach(([b,n])=>{tmp.eq[BASES[b].slot]={b,L:1,r:0,n,st:BASES[b].stat==='int'?{int:1}:undefined}});tmp.eq.kask={b:'kask',L:1,r:0};const d=derive(tmp);
  return `<div class="stats7">${STAT_KEYS.map(k=>`<div class="st ${k===C.main?'main':''}" title="${STATD[k]}"><span>${STATN[k]}</span><b>${d.s[k]}</b></div>`).join('')}</div>
-  <div class="derived"><span>❤️ Can <b>${d.maxHp}</b></span><span>🔷 Mana <b>${d.maxMp}</b></span><span>⚔️ Saldırı <b>${Math.round(d.atkLo)}–${Math.round(d.atkHi)}</b></span><span>🛡️ Zırh <b>${d.armor}</b></span><span>💫 Kritik <b>%${d.crit}</b></span></div>
+  <div class="derived"><span>${IK('ui_can','ik18')} Can <b>${d.maxHp}</b></span><span>${IK('ui_mana','ik18')} Mana <b>${d.maxMp}</b></span><span>${IK('ikon_deger_hasar','ik18')} Saldırı <b>${Math.round(d.atkLo)}–${Math.round(d.atkHi)}</b></span><span>${IK('ikon_deger_zirh','ik18')} Zırh <b>${d.armor}</b></span><span>${IK('ikon_deger_kritik','ik18')} Kritik <b>%${d.crit}</b></span></div>
   <div class="grow">Başlangıç eşyası: ${C.kit.map(x=>x[1]).join(', ')}, Deri Başlık</div>
   <div class="sklist">${C.skills.filter(k=>k.act).map(k=>`<div class="sk lock"><span class="sl">Sv ${k.lv}</span> ${ICO(k.id)||k.ic} <b>${k.ad}</b> <i>${k.mp} MP</i><small>${k.desc}</small></div>`).join('')}</div>`}
 function stepHTML(){const s=CSTEPS[CST][0];
@@ -1448,7 +1450,7 @@ function checkWin(){
  qKill(B.enemies.map(e=>e.key));
  if(G.solo)xp*=1.5;xp=Math.round(xp);gold=Math.round(gold);
  G.xp+=xp;G.gold+=gold;items.forEach(i=>G.inv.push(i));
- let potTxt='';for(let i=0;i<pots;i++){if(beltCount()<F.belt){G.pot.can++;potTxt+='<br>🧪 +1 can iksiri'}else potTxt+='<br><span class="dim">Bir iksir buldun ama kemerin dolu.</span>'}
+ let potTxt='';for(let i=0;i<pots;i++){if(beltCount()<F.belt){G.pot.can++;potTxt+='<br>'+IK('ui_kemer','ik20')+' +1 can iksiri'}else potTxt+='<br><span class="dim">Bir iksir buldun ama kemerin dolu.</span>'}
  let lv='';
  while(G.level<MAXLV&&G.xp>=F.xpNext(G.level)){G.xp-=F.xpNext(G.level);const before=derive().maxHp;G.level++;h.hp+=derive().maxHp-before;
   lv+=`<p class="lvl cz">⭐ Karakter Seviyesi ${G.level}!</p><p class="dim">Can ve mana arttı, silah hasarı eşya seviyesiyle büyür.</p>`}
@@ -1459,7 +1461,7 @@ function checkWin(){
  let rev='';const c=B.party.find(p=>p.uid==='comp');if(c&&c.hp<=0){c.hp=Math.round(COMP.maxHp*.3);rev='<p class="dim">Savaşçı sendeleyerek ayağa kalkıyor (%30 can).</p>'}
  const nxt=CP[CL.lv+1];
  setTimeout(()=>overlay(`<div class="kicker">${B.s.kicker}</div><h2>Zafer!</h2>
-  <p>✨ +${xp} XP${G.solo?' <span class="badge">(Yalnız Kurt +%50)</span>':''} · 🪙 +${gold} altın · 🔱 +${cp} sınıf puanı${potTxt}</p>
+  <p>${IK('ui_xp','ik20')} +${xp} XP${G.solo?' <span class="badge">(Yalnız Kurt +%50)</span>':''} · ${IK('ui_altin','ik20')} +${gold} altın · ${IK('ui_sinifpuan','ik20')} +${cp} sınıf puanı${potTxt}</p>
   ${items.map(i=>itemHTML(i)).join('')}${lv}${rev}
   <div class="bars"><div>Karakter Sv ${G.level} <div class="xpbar"><i style="width:${G.xp/F.xpNext(G.level)*100}%"></i></div><small>${G.xp} / ${F.xpNext(G.level)} XP</small></div>
    <div>${C.ad} Sv ${CL.lv} <div class="xpbar cp"><i style="width:${nxt?(CL.cp-CP[CL.lv])/(nxt-CP[CL.lv])*100:100}%"></i></div><small>${nxt?CL.cp+' / '+nxt+' puan':'en üst seviye'}</small></div></div>
@@ -1814,7 +1816,7 @@ function chainPanel(){return new Promise(res=>{for(const k in keys)keys[k]=false
   o.querySelector('#chx').onclick=()=>close();
   o.querySelectorAll('[data-qa]').forEach(b=>b.onclick=async()=>{const id=b.dataset.qa,q=QUESTS[id];o.style.display='none';
    const v=await say([...q.offer,{who:'koylu',text:`📜 ${q.ad}: ${q.desc}`,choice:[{label:'✔ Kabul et',v:true},{label:'Şimdi değil',v:false}]}]);
-   if(v){Q()[id]={st:'active',n:{},c:0};toast(`📜 Ana görev: ${q.ad} · ${qProg(id)}`);hud();if(M.key==='forest'||M.key==='tunel'){}};o.style.display='';draw()});
+   if(v){Q()[id]={st:'active',n:{},c:0};toast(`📜 Ana görev: ${q.ad} · ${qProg(id)}`);if(id==='ayi1'){let n=0;while(G.pot.can<2&&beltCount()<F.belt){G.pot.can++;n++}if(n)setTimeout(()=>toast(`Köylü eline ${n} can iksiri tutuşturdu: "Ayıya eli boş gitme."`),1600)}hud();if(M.key==='forest'||M.key==='tunel'){}};o.style.display='';draw()});
   o.querySelectorAll('[data-qt]').forEach(b=>b.onclick=async()=>{const id=b.dataset.qt,q=QUESTS[id];o.style.display='none';
    await say(q.done);const s=qState(id);s.st='turned';s.c=1;questReward(q.rew,q.ad);hud();o.style.display='';draw()})};
  draw()})}
@@ -1913,7 +1915,7 @@ addEventListener('keydown',e=>{const k=e.key.toLowerCase();
  if(['arrowleft','arrowright','arrowup','arrowdown',' '].includes(k))e.preventDefault();
  keys[k]=true;if(e.repeat)return;
  if(k==='e'||k===' '||k==='enter'){if(M.talking)advance();else interactNear()}
- if(k==='+'||k==='='||k==='-'){const Zs=[1,.85,.7,.58];let i=Zs.indexOf(OPT.zoom);if(i<0)i=2;i=clamp(i+(k==='-'?1:-1),0,3);OPT.zoom=Zs[i];saveOpt();M.lastCam=null;toast('🔍 Harita görüşü: '+['Yakın','Orta','Geniş','Çok geniş'][i])}
+ if(k==='+'||k==='='||k==='-'){const Zs=[1,.85,.7,.58];let i=Zs.indexOf(OPT.zoom);if(i<0)i=2;i=clamp(i+(k==='-'?1:-1),0,3);OPT.zoom=Zs[i];saveOpt();M.lastCam=null;toast('Harita görüşü: '+['Yakın','Orta','Geniş','Çok geniş'][i])}
  if(k==='m'){const mm=$('mmap');if(mm)mm.classList.toggle('big')}
  if(k==='c')openPanel('kar');if(k==='j')openPanel('gorev');if(k==='i')openPanel('ekip');if(k==='k')openPanel('sinif')});
 addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false});
@@ -2025,7 +2027,7 @@ function onVpClick(ev){
  if(entEl){const e=getEnt(entEl.id.slice(2));if(e&&e.talk){if(nearest()===e){talkTo(e);return}M.target={x:e.x,y:e.y+30};M.pending=e;return}}
  const r=$('vp').getBoundingClientRect();
  const Z=mapZoom($('vp'));M.target={x:(ev.clientX-r.left)/Z+(M.camX||0),y:(ev.clientY-r.top)/Z+(M.camY||0)};M.pending=null;M.stuck=0}
-function mapZoom(vp){const d=M.def;return Math.min(1,Math.max(OPT.zoom||.7,vp.clientWidth/d.W,vp.clientHeight/d.H))}
+function mapZoom(vp){const d=M.def,fx=vp.clientWidth/d.W,fy=vp.clientHeight/d.H;return Math.min(Math.max(1,Math.min(fx,fy,1.6)),Math.max(OPT.zoom||.7,fx,fy))}
 function wsTick(e,el,t){
  const px=e._px==null?e.x:e._px,py=e._py==null?e.y:e._py,dx=e.x-px,dy=e.y-py;e._px=e.x;e._py=e.y;
  if(Math.hypot(dx,dy)>.15){e._mt=t;if(Math.abs(dy)>Math.abs(dx)*1.15)e.dir=dy>0?'asagi':'yukari';else if(Math.abs(dx)>.05)e.dir=dx>0?'sag':'sol'}
@@ -2396,11 +2398,11 @@ function tabGorev(){const ids=Object.keys(QUESTS),by={active:[],avail:[],done:[]
   <section class="mcol">${det}</section></div>`}
 
 /* ---------- AYARLAR ---------- */
-function rangeRow(ic,ad,key,vals,labels){const i=Math.max(0,vals.indexOf(OPT[key])),f=vals.length>1?i/(vals.length-1):0;return `<div class="orow2"><span class="oic">${ic}</span><span class="oad">${ad}</span><div class="rng" style="--f:${f}"><span class="rtrack"></span><span class="rfill"></span><span class="rthumb"></span><input type="range" min="0" max="${vals.length-1}" step="1" value="${i}" data-opt="${key}" data-vals='${JSON.stringify(vals)}' data-labels='${JSON.stringify(labels)}'></div><span class="rv">${labels[i]}</span></div>`}
+function rangeRow(ic,ad,key,vals,labels){const i=Math.max(0,vals.indexOf(OPT[key])),f=vals.length>1?i/(vals.length-1):0;return `<div class="orow2">${ic?`<span class="oic">${ic}</span>`:''}<span class="oad">${ad}</span><div class="rng" style="--f:${f}"><span class="rtrack"></span><span class="rfill"></span><span class="rthumb"></span><input type="range" min="0" max="${vals.length-1}" step="1" value="${i}" data-opt="${key}" data-vals='${JSON.stringify(vals)}' data-labels='${JSON.stringify(labels)}'></div><span class="rv">${labels[i]}</span></div>`}
 function togRow(ad,key,help){return `<div class="orow2"><button class="chk ${OPT[key]?'on':''}" data-tog="${key}" aria-label="${ad}"></button><span class="oad">${ad}</span><span class="dim">${help||''}</span></div>`}
 function tabAyar(){const cats=[['goruntu',IK('ayar_goruntu','ik32'),'Görüntü'],['kontrol',IK('ayar_kontrol','ik32'),'Kontroller'],['oyun',IK('ayar_oyun','ik32'),'Oyun'],['ses',IK('ayar_ses','ik32'),'Ses']];
  let body='';
- if(PSET==='goruntu')body=`<h2 class="mh">Görüntü Ayarları</h2>${rangeRow('🔭','Harita görüşü','zoom',[1,.85,.7,.58],['Yakın','Orta','Geniş','Çok geniş'])}${rangeRow('⏩','Savaş animasyon hızı','speed',[1,.6,.35],['Normal','Hızlı','Çok hızlı'])}${togRow('Savaş günlüğünü göster','log')}`;
+ if(PSET==='goruntu')body=`<h2 class="mh">Görüntü Ayarları</h2>${rangeRow('','Harita görüşü','zoom',[1,.85,.7,.58],['Yakın','Orta','Geniş','Çok geniş'])}${rangeRow('','Savaş animasyon hızı','speed',[1,.6,.35],['Normal','Hızlı','Çok hızlı'])}${togRow('Savaş günlüğünü göster','log')}`;
  if(PSET==='kontrol')body=`<h2 class="mh">Kontroller</h2><div class="keys">${[['Yön tuşları / WASD','Yürü'],['Fare tıklaması','Tıklanan yere yürü'],['E / Boşluk','Konuş, incele, etkileşim'],['1–5','Saldırı ve yetenekler (savaşta)'],['6–7','Can ve mana iksiri (savaşta)'],['F','Savaştan kaç'],['I','Çanta'],['C','Karakter'],['K','Sınıflar'],['J','Görevler'],['+ / −','Harita yakınlaştır / uzaklaştır'],['Esc','Pencereyi kapat · Ayarlar']].map(([k,a])=>`<div><kbd>${k}</kbd><span>${a}</span></div>`).join('')}</div><p class="dim">Savaşta aynı tuşa ikinci kez basarsan ilk düşman hedeflenir.</p>`;
  if(PSET==='oyun')body=`<h2 class="mh">Oyun</h2>${B?'<p class="dim">Kayıt ve ana menü savaş dışında açılır.</p>':tabKayit()}`;
  if(PSET==='ses')body=`<h2 class="mh">Ses Ayarları</h2><p class="dim">Müzik ve ses efektleri yakında eklenecek. Geldiğinde ana ses, müzik, efektler ve arayüz sesi buradan ayarlanacak.</p>`;
