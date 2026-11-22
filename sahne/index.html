@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hayat Ağacı · Sahne Denemesi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0b0810;color:#e9dcc4;font-family:'EB Garamond',Georgia,serif;overflow:hidden}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);overflow:hidden;background:#120d18}
+.bg{position:absolute;inset:-2%;background:url(a/bg.webp) center/cover;transition:transform 1.2s ease,filter 1.2s ease}
+.fight .bg{transform:scale(1.04);filter:brightness(.82) saturate(.9)}
+.fog{position:absolute;left:-50%;right:-50%;height:38%;bottom:22%;pointer-events:none;background:radial-gradient(ellipse at 30% 60%,rgba(170,150,190,.22),transparent 60%),radial-gradient(ellipse at 75% 50%,rgba(160,140,180,.18),transparent 55%);animation:fog 26s linear infinite alternate;mix-blend-mode:screen}
+@keyframes fog{to{transform:translateX(12%)}}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,transparent 45%,rgba(8,4,14,.7) 100%)}
+.unit{position:absolute;bottom:13%;transform-origin:50% 100%;transition:left .5s cubic-bezier(.3,.7,.3,1)}
+.unit img{display:block;height:100%;width:auto;filter:drop-shadow(0 0 1px rgba(0,0,0,.6))}
+.unit .sh{position:absolute;left:10%;right:10%;bottom:-2.5%;height:6%;background:radial-gradient(ellipse,rgba(0,0,0,.65),transparent 70%);z-index:-1}
+.unit .body{height:100%;transform-origin:50% 100%;animation:br 3.2s ease-in-out infinite}
+@keyframes br{50%{transform:scale(1.01,1.022)}}
+#hero{left:14%;height:46%}
+#wolf{left:62%;height:30%;cursor:pointer}
+#wolf .body{animation:brw 2.4s ease-in-out infinite}
+@keyframes brw{50%{transform:scale(1.015,1.03) translateY(-.5%)}}
+#wolf:hover img{filter:drop-shadow(0 0 6px rgba(190,90,255,.75)) drop-shadow(0 0 1px #000)}
+.fight #wolf{cursor:default}.fight #wolf:hover img{filter:drop-shadow(0 0 1px rgba(0,0,0,.6))}
+.fight #hero{left:20%}.fight #wolf{left:56%}
+.tag{position:absolute;left:50%;bottom:100%;transform:translate(-50%,-8px);white-space:nowrap;font:600 clamp(11px,1.3vw,17px) 'Cinzel',serif;color:#e7d3ff;text-shadow:0 2px 4px #000;text-align:center}
+.tag small{display:block;font:italic clamp(10px,1vw,14px) 'EB Garamond';color:#cdb9e6;opacity:.85}
+.fight .tag small{display:none}
+.bars{position:absolute;left:50%;bottom:100%;transform:translate(-50%,-6px);width:clamp(120px,14vw,220px);display:none}
+.fight .bars{display:block}.fight .tag{transform:translate(-50%,calc(-8px - 2.2em))}
+.bar{height:9px;background:#1b1016;border:1px solid #5a3a3a;border-radius:2px;overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;background:linear-gradient(#c8423a,#7d1f1d);transition:width .4s}
+.bar.mp i{background:linear-gradient(#5b7fd0,#2c447e)}
+.num{position:absolute;left:50%;top:10%;font:700 clamp(20px,2.6vw,40px) 'Cinzel';color:#ffd9a0;text-shadow:0 3px 0 #2a0c0c,0 0 8px #000;animation:num 1.1s ease-out forwards;pointer-events:none}
+.num.crit{color:#ff8a5c;font-size:clamp(26px,3.4vw,52px)}.num.miss{color:#bbb}
+@keyframes num{0%{transform:translate(-50%,10px);opacity:0}15%{opacity:1}100%{transform:translate(-50%,-70px);opacity:0}}
+.hit .body{animation:hit .35s}
+@keyframes hit{20%{transform:translateX(3%);filter:brightness(2.2)}60%{transform:translateX(-2%)}}
+.lungeR .body{animation:lr .45s}@keyframes lr{40%{transform:translateX(28%)}}
+.lungeL .body{animation:ll .45s}@keyframes ll{40%{transform:translateX(-40%)}}
+.dead{transition:opacity 1s,filter 1s;opacity:0;filter:grayscale(1)}
+#ui{position:absolute;left:50%;bottom:2.5%;transform:translateX(-50%);display:flex;gap:10px;opacity:0;pointer-events:none;transition:opacity .4s}
+.fight #ui{opacity:1;pointer-events:auto}
+.btn{font:600 clamp(12px,1.25vw,17px) 'Cinzel',serif;color:#f1e2c6;background:linear-gradient(#3a2a22,#1e1511);border:1px solid #8a6a44;border-radius:4px;padding:.6em 1.2em;cursor:pointer;box-shadow:0 3px 0 #0c0806,inset 0 1px 0 rgba(255,220,170,.15)}
+.btn:hover{border-color:#e0b878;color:#fff}.btn:disabled{opacity:.4;cursor:default}
+.btn small{display:block;font:italic 12px 'EB Garamond';color:#c9b08a}
+#top{position:absolute;left:3%;top:4%;}
+#top h1{margin:0;font:700 clamp(18px,2.4vw,34px) 'Cinzel';color:#efe0c4;text-shadow:0 2px 6px #000;letter-spacing:.04em}
+#top p{margin:.1em 0 0;font:italic clamp(12px,1.3vw,18px) 'EB Garamond';color:#cbb8d8;text-shadow:0 2px 4px #000}
+#bubble{position:absolute;left:12%;bottom:62%;max-width:30%;background:rgba(14,9,18,.86);border:1px solid #6d5480;border-radius:6px;padding:.7em 1em;font-size:clamp(13px,1.35vw,19px);line-height:1.35;box-shadow:0 6px 20px #0008;transition:opacity .5s}
+#bubble b{font-family:'Cinzel';color:#e7d3ff;font-size:.8em;display:block;margin-bottom:.2em}
+#log{position:absolute;right:2.5%;top:4%;width:26%;font-size:clamp(12px,1.15vw,16px);text-align:right;text-shadow:0 2px 3px #000;opacity:0;transition:opacity .4s}
+.fight #log{opacity:1}#log div{animation:fin .4s}@keyframes fin{from{opacity:0;transform:translateY(-6px)}}
+#end{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,5,12,.55)}
+#end.on{display:flex}
+#end .card{background:linear-gradient(#21171c,#140e12);border:1px solid #8a6a44;padding:1.6em 2.4em;text-align:center;box-shadow:0 10px 40px #000c}
+#end h2{margin:0 0 .3em;font:700 clamp(24px,3vw,42px) 'Cinzel';color:#f0d79a}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+  <div class="bg"></div><div class="fog"></div>
+  <div class="unit" id="hero"><div class="tag">Deneme</div><div class="bars"><div class="bar"><i id="hhp" style="width:100%"></i></div><div class="bar mp"><i style="width:100%"></i></div></div><div class="body"><img src="a/kahraman.png" alt=""></div><div class="sh"></div></div>
+  <div class="unit" id="wolf"><div class="tag">Yozlaşmış Kurt<small>tıkla · saldır</small></div><div class="bars"><div class="bar"><i id="whp" style="width:100%"></i></div></div><div class="body"><img src="a/kurt.png" alt=""></div><div class="sh"></div></div>
+  <div class="vig"></div>
+  <div id="top"><h1>Ormanlık Yol</h1><p>Sınır Köyü'ne giden eski yol</p></div>
+  <div id="bubble"><b>Deneme</b>Kökler... kararmış. Bu ormanda bir şey çürüyor.</div>
+  <div id="log"></div>
+  <div id="ui"><button class="btn" data-a="atk">Saldırı<small>8–12 hasar</small></button><button class="btn" data-a="sh">Kalkan Darbesi<small>sersemletir · 15 mana</small></button><button class="btn" data-a="pot">İksir<small>+40 can · 2</small></button></div>
+  <div id="end"><div class="card"><h2>Zafer!</h2><p>+30 XP · +14 altın</p><button class="btn" onclick="location.reload()">Yeniden dene</button></div></div>
+</div></div>
+<script>
+const $=s=>document.querySelector(s),st=$('#stage');
+let H={hp:140,max:140,mp:100},W={hp:66,max:66,stun:0},pots=2,busy=false,fight=false;
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),W8=ms=>new Promise(r=>setTimeout(r,ms));
+function log(t){const d=document.createElement('div');d.innerHTML=t;$('#log').prepend(d);while($('#log').children.length>5)$('#log').lastChild.remove()}
+function num(el,t,c){const n=document.createElement('div');n.className='num '+(c||'');n.textContent=t;el.appendChild(n);setTimeout(()=>n.remove(),1100)}
+function upd(){$('#hhp').style.width=H.hp/H.max*100+'%';$('#whp').style.width=Math.max(0,W.hp)/W.max*100+'%';document.querySelector('[data-a=pot] small').textContent=`+40 can · ${pots}`;document.querySelector('[data-a=pot]').disabled=!pots;document.querySelector('[data-a=sh]').disabled=H.mp<15}
+function anim(el,c,ms){el.classList.remove(c);void el.offsetWidth;el.classList.add(c);return W8(ms)}
+$('#wolf').onclick=async()=>{if(fight)return;fight=true;$('#bubble').style.opacity=0;st.classList.add('fight');log('Yozlaşmış Kurt dişlerini gösteriyor!');upd()};
+document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>act(b.dataset.a));
+async function act(a){if(busy||!fight)return;busy=true;const h=$('#hero'),w=$('#wolf');
+ if(a==='pot'){pots--;H.hp=Math.min(H.max,H.hp+40);num(h,'+40','');h.querySelector('.num').style.color='#9dff9a';log('İksir içtin. <b>+40 can</b>')}
+ else{await anim(h,'lungeR',220);const crit=Math.random()<.15,miss=Math.random()<.12;let d=a==='sh'?R(5,8):R(8,12);if(a==='sh')H.mp-=15;
+  if(miss){num(w,'ıska','miss');log('Kurt son anda sıçradı. <b>Iska!</b>')}
+  else{if(crit)d=Math.round(d*1.8);W.hp-=d;anim(w,'hit',350);num(w,d,crit?'crit':'');log(`${a==='sh'?'Kalkan darbesi':'Kılıç darbesi'}: <b>${d}</b> hasar${crit?' · kritik!':''}`);if(a==='sh'){W.stun=1;log('Kurt sersemledi.')}}
+  await W8(260)}
+ upd();if(W.hp<=0){w.classList.add('dead');log('Kurt yere yığıldı.');await W8(900);$('#end').classList.add('on');return}
+ await W8(500);
+ if(W.stun){W.stun=0;log('Kurt toparlanmaya çalışıyor...')}
+ else{await anim(w,'lungeL',220);const d=R(6,11);H.hp=Math.max(1,H.hp-d);anim(h,'hit',350);num(h,d);log(`Kurt ısırdı: <b>${d}</b> hasar`)}
+ upd();busy=false}
+</script>
+</body>
+</html>
