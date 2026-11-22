@@ -10,25 +10,29 @@
 html,body{margin:0;height:100%;background:#0b0810;color:#e9dcc4;font-family:'EB Garamond',Georgia,serif;overflow:hidden}
 #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
 #stage{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);overflow:hidden;background:#120d18}
-.bg{position:absolute;inset:-2%;background:url(a/bg.webp) center/cover;transition:transform 1.2s ease,filter 1.2s ease}
+.bg{position:absolute;inset:-2%;background:center/cover;transition:transform 1.2s ease,filter 1.2s ease}
 .fight .bg{transform:scale(1.04);filter:brightness(.82) saturate(.9)}
 .fog{position:absolute;left:-50%;right:-50%;height:38%;bottom:22%;pointer-events:none;background:radial-gradient(ellipse at 30% 60%,rgba(170,150,190,.22),transparent 60%),radial-gradient(ellipse at 75% 50%,rgba(160,140,180,.18),transparent 55%);animation:fog 26s linear infinite alternate;mix-blend-mode:screen}
 @keyframes fog{to{transform:translateX(12%)}}
 .vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,transparent 45%,rgba(8,4,14,.7) 100%)}
+#black{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .6s;z-index:50}
+#black.on{opacity:1}
 .unit{position:absolute;bottom:13%;transform-origin:50% 100%;transition:left .5s cubic-bezier(.3,.7,.3,1)}
 .unit img{display:block;height:100%;width:auto;filter:drop-shadow(0 0 1px rgba(0,0,0,.6))}
 .unit .sh{position:absolute;left:10%;right:10%;bottom:-2.5%;height:6%;background:radial-gradient(ellipse,rgba(0,0,0,.65),transparent 70%);z-index:-1}
 .unit .body{height:100%;transform-origin:50% 100%;animation:br 3.2s ease-in-out infinite}
 @keyframes br{50%{transform:scale(1.01,1.022)}}
-#hero{left:14%;height:46%}
-#wolf{left:62%;height:30%;cursor:pointer}
-#wolf .body{animation:brw 2.4s ease-in-out infinite}
+.unit.click{cursor:pointer}
+.unit.click:hover img{filter:drop-shadow(0 0 6px rgba(240,200,120,.7)) drop-shadow(0 0 1px #000)}
+.unit.foe.click:hover img{filter:drop-shadow(0 0 6px rgba(190,90,255,.75)) drop-shadow(0 0 1px #000)}
+.fight .unit.click{cursor:default}.fight .unit:hover img{filter:drop-shadow(0 0 1px rgba(0,0,0,.6))}
+.foe .body{animation:brw 2.4s ease-in-out infinite}
 @keyframes brw{50%{transform:scale(1.015,1.03) translateY(-.5%)}}
-#wolf:hover img{filter:drop-shadow(0 0 6px rgba(190,90,255,.75)) drop-shadow(0 0 1px #000)}
-.fight #wolf{cursor:default}.fight #wolf:hover img{filter:drop-shadow(0 0 1px rgba(0,0,0,.6))}
-.fight #hero{left:20%}.fight #wolf{left:56%}
-.tag{position:absolute;left:50%;bottom:100%;transform:translate(-50%,-8px);white-space:nowrap;font:600 clamp(11px,1.3vw,17px) 'Cinzel',serif;color:#e7d3ff;text-shadow:0 2px 4px #000;text-align:center}
-.tag small{display:block;font:italic clamp(10px,1vw,14px) 'EB Garamond';color:#cdb9e6;opacity:.85}
+.tag{position:absolute;left:50%;bottom:100%;transform:translate(-50%,-8px);white-space:nowrap;font:600 clamp(11px,1.3vw,17px) 'Cinzel',serif;color:#f0e0c0;text-shadow:0 2px 4px #000;text-align:center}
+.foe .tag{color:#e7d3ff}
+.tag small{display:block;font:italic clamp(10px,1vw,14px) 'EB Garamond';color:#d9c8a8;opacity:.85}
+.tag .q{display:inline-block;margin-left:.3em;color:#ffd24a;font-size:1.3em;animation:qb 1.2s ease-in-out infinite}
+@keyframes qb{50%{transform:translateY(-4px)}}
 .fight .tag small{display:none}
 .bars{position:absolute;left:50%;bottom:100%;transform:translate(-50%,-6px);width:clamp(120px,14vw,220px);display:none}
 .fight .bars{display:block}.fight .tag{transform:translate(-50%,calc(-8px - 2.2em))}
@@ -36,13 +40,22 @@ html,body{margin:0;height:100%;background:#0b0810;color:#e9dcc4;font-family:'EB 
 .bar i{display:block;height:100%;background:linear-gradient(#c8423a,#7d1f1d);transition:width .4s}
 .bar.mp i{background:linear-gradient(#5b7fd0,#2c447e)}
 .num{position:absolute;left:50%;top:10%;font:700 clamp(20px,2.6vw,40px) 'Cinzel';color:#ffd9a0;text-shadow:0 3px 0 #2a0c0c,0 0 8px #000;animation:num 1.1s ease-out forwards;pointer-events:none}
-.num.crit{color:#ff8a5c;font-size:clamp(26px,3.4vw,52px)}.num.miss{color:#bbb}
+.num.crit{color:#ff8a5c;font-size:clamp(26px,3.4vw,52px)}.num.miss{color:#bbb}.num.heal{color:#9dff9a}
 @keyframes num{0%{transform:translate(-50%,10px);opacity:0}15%{opacity:1}100%{transform:translate(-50%,-70px);opacity:0}}
 .hit .body{animation:hit .35s}
 @keyframes hit{20%{transform:translateX(3%);filter:brightness(2.2)}60%{transform:translateX(-2%)}}
 .lungeR .body{animation:lr .45s}@keyframes lr{40%{transform:translateX(28%)}}
 .lungeL .body{animation:ll .45s}@keyframes ll{40%{transform:translateX(-40%)}}
-.dead{transition:opacity 1s,filter 1s;opacity:0;filter:grayscale(1)}
+.dead{transition:opacity 1s,filter 1s;opacity:0;filter:grayscale(1);pointer-events:none}
+.spot{position:absolute;cursor:pointer;border-radius:8px}
+.spot span{position:absolute;left:50%;top:-6px;transform:translate(-50%,-100%);white-space:nowrap;font:600 clamp(11px,1.2vw,16px) 'Cinzel';color:#f0e0c0;text-shadow:0 2px 4px #000;background:rgba(12,8,14,.7);border:1px solid #6b5030;padding:.15em .6em;border-radius:4px;opacity:0;transition:opacity .2s}
+.spot:hover span{opacity:1}.spot:hover{box-shadow:inset 0 0 40px rgba(255,200,120,.12)}
+.fight .spot{display:none}
+.exit{position:absolute;bottom:20%;font:600 clamp(12px,1.3vw,18px) 'Cinzel';color:#f0e0c0;text-shadow:0 2px 4px #000;cursor:pointer;padding:.4em .8em;background:rgba(12,8,14,.55);border:1px solid #6b5030;border-radius:4px;animation:ex 2s ease-in-out infinite}
+.exit:hover{border-color:#e0b878;background:rgba(40,26,18,.8)}
+.exit.L{left:1.5%}.exit.R{right:1.5%}
+@keyframes ex{50%{opacity:.7}}
+.fight .exit{display:none}
 #ui{position:absolute;left:50%;bottom:2.5%;transform:translateX(-50%);display:flex;gap:10px;opacity:0;pointer-events:none;transition:opacity .4s}
 .fight #ui{opacity:1;pointer-events:auto}
 .btn{font:600 clamp(12px,1.25vw,17px) 'Cinzel',serif;color:#f1e2c6;background:linear-gradient(#3a2a22,#1e1511);border:1px solid #8a6a44;border-radius:4px;padding:.6em 1.2em;cursor:pointer;box-shadow:0 3px 0 #0c0806,inset 0 1px 0 rgba(255,220,170,.15)}
@@ -51,49 +64,98 @@ html,body{margin:0;height:100%;background:#0b0810;color:#e9dcc4;font-family:'EB 
 #top{position:absolute;left:3%;top:4%;}
 #top h1{margin:0;font:700 clamp(18px,2.4vw,34px) 'Cinzel';color:#efe0c4;text-shadow:0 2px 6px #000;letter-spacing:.04em}
 #top p{margin:.1em 0 0;font:italic clamp(12px,1.3vw,18px) 'EB Garamond';color:#cbb8d8;text-shadow:0 2px 4px #000}
-#bubble{position:absolute;left:12%;bottom:62%;max-width:30%;background:rgba(14,9,18,.86);border:1px solid #6d5480;border-radius:6px;padding:.7em 1em;font-size:clamp(13px,1.35vw,19px);line-height:1.35;box-shadow:0 6px 20px #0008;transition:opacity .5s}
+#bubble{position:absolute;max-width:32%;background:rgba(14,9,18,.9);border:1px solid #6d5480;border-radius:6px;padding:.7em 1em;font-size:clamp(13px,1.35vw,19px);line-height:1.35;box-shadow:0 6px 20px #0008;transition:opacity .3s;opacity:0;pointer-events:none;z-index:20}
+#bubble.on{opacity:1;pointer-events:auto;cursor:pointer}
 #bubble b{font-family:'Cinzel';color:#e7d3ff;font-size:.8em;display:block;margin-bottom:.2em}
+#bubble .nx{display:block;text-align:right;font-size:.75em;color:#a99;margin-top:.3em}
 #log{position:absolute;right:2.5%;top:4%;width:26%;font-size:clamp(12px,1.15vw,16px);text-align:right;text-shadow:0 2px 3px #000;opacity:0;transition:opacity .4s}
 .fight #log{opacity:1}#log div{animation:fin .4s}@keyframes fin{from{opacity:0;transform:translateY(-6px)}}
-#end{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,5,12,.55)}
+#end{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,5,12,.55);z-index:30}
 #end.on{display:flex}
 #end .card{background:linear-gradient(#21171c,#140e12);border:1px solid #8a6a44;padding:1.6em 2.4em;text-align:center;box-shadow:0 10px 40px #000c}
 #end h2{margin:0 0 .3em;font:700 clamp(24px,3vw,42px) 'Cinzel';color:#f0d79a}
+#toast{position:absolute;left:50%;top:12%;transform:translateX(-50%);background:rgba(12,8,14,.85);border:1px solid #6b5030;padding:.5em 1.2em;border-radius:4px;font-size:clamp(13px,1.3vw,18px);opacity:0;transition:opacity .3s;pointer-events:none;z-index:40}
+#toast.on{opacity:1}
 </style>
 </head>
 <body>
 <div id="wrap"><div id="stage">
-  <div class="bg"></div><div class="fog"></div>
-  <div class="unit" id="hero"><div class="tag">Deneme</div><div class="bars"><div class="bar"><i id="hhp" style="width:100%"></i></div><div class="bar mp"><i style="width:100%"></i></div></div><div class="body"><img src="a/kahraman.png" alt=""></div><div class="sh"></div></div>
-  <div class="unit" id="wolf"><div class="tag">Yozlaşmış Kurt<small>tıkla · saldır</small></div><div class="bars"><div class="bar"><i id="whp" style="width:100%"></i></div></div><div class="body"><img src="a/kurt.png" alt=""></div><div class="sh"></div></div>
+  <div class="bg" id="bg"></div><div class="fog"></div>
+  <div id="layer"></div>
   <div class="vig"></div>
-  <div id="top"><h1>Ormanlık Yol</h1><p>Sınır Köyü'ne giden eski yol</p></div>
-  <div id="bubble"><b>Deneme</b>Kökler... kararmış. Bu ormanda bir şey çürüyor.</div>
+  <div id="top"><h1 id="t1"></h1><p id="t2"></p></div>
+  <div id="bubble"></div>
   <div id="log"></div>
+  <div id="toast"></div>
   <div id="ui"><button class="btn" data-a="atk">Saldırı<small>8–12 hasar</small></button><button class="btn" data-a="sh">Kalkan Darbesi<small>sersemletir · 15 mana</small></button><button class="btn" data-a="pot">İksir<small>+40 can · 2</small></button></div>
-  <div id="end"><div class="card"><h2>Zafer!</h2><p>+30 XP · +14 altın</p><button class="btn" onclick="location.reload()">Yeniden dene</button></div></div>
+  <div id="end"><div class="card"><h2>Zafer!</h2><p>+30 XP · +14 altın</p><button class="btn" id="endok">Devam</button></div></div>
+  <div id="black"></div>
 </div></div>
 <script>
 const $=s=>document.querySelector(s),st=$('#stage');
-let H={hp:140,max:140,mp:100},W={hp:66,max:66,stun:0},pots=2,busy=false,fight=false;
 const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),W8=ms=>new Promise(r=>setTimeout(r,ms));
+const G={name:'Deneme',hp:140,max:140,mp:100,pots:2,talked:false,wolfDead:false};
+const SC={
+ koy:{bg:'a/bg_koy.webp',t1:'Sınır Köyü',t2:'Ormanın kıyısında yorgun bir köy',
+  units:[{id:'hero',img:'a/kahraman.png',x:22,h:46,name:()=>G.name},
+         {id:'miran',img:'a/miran.png',x:60,h:44,name:()=>'Miran',sub:'Telaşlı Köylü',click:talkMiran,q:()=>!G.talked}],
+  spots:[{x:1,y:30,w:28,h:30,l:'Demirci'},{x:35,y:36,w:12,h:23,l:'Hayat Ağacı Sunağı'},{x:57,y:20,w:24,h:40,l:'Han'},{x:84,y:24,w:16,h:34,l:'Köy Kapısı'}],
+  exits:[{side:'L',l:'◀ Ormanlık Yol',to:'orman'}],
+  intro:[['hero','Burası Sınır Köyü olmalı. Herkes kapısını erkenden kapatmış.']]},
+ orman:{bg:'a/bg_orman.webp',t1:'Ormanlık Yol',t2:"Sınır Köyü'ne giden eski yol",
+  units:[{id:'hero',img:'a/kahraman.png',x:14,h:46,name:()=>G.name},
+         {id:'wolf',img:'a/kurt.png',x:62,h:30,name:()=>'Yozlaşmış Kurt',sub:'tıkla · saldır',foe:true,click:startFight,hide:()=>G.wolfDead}],
+  exits:[{side:'R',l:'Sınır Köyü ▶',to:'koy'}],
+  intro:[['hero','Kökler... kararmış. Bu ormanda bir şey çürüyor.']]}
+};
+let cur=null,busy=false,fight=false,W={};
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2200)}
+async function go(k,first){$('#black').classList.add('on');if(!first)await W8(600);cur=k;const s=SC[k];
+ $('#bg').style.backgroundImage=`url(${s.bg})`;$('#t1').textContent=s.t1;$('#t2').textContent=s.t2;
+ let h='';s.units.forEach(u=>{if(u.hide&&u.hide())return;h+=`<div class="unit ${u.foe?'foe':''} ${u.click?'click':''}" id="u-${u.id}" style="left:${u.x}%;height:${u.h}%"><div class="tag">${u.name()}${u.q&&u.q()?'<span class="q">!</span>':''}${u.sub?`<small>${u.sub}</small>`:''}</div>${u.id==='hero'||u.foe?`<div class="bars"><div class="bar"><i id="hp-${u.id}" style="width:100%"></i></div>${u.id==='hero'?'<div class="bar mp"><i id="mp-hero" style="width:100%"></i></div>':''}</div>`:''}<div class="body"><img src="${u.img}" alt=""></div><div class="sh"></div></div>`});
+ (s.spots||[]).forEach(p=>h+=`<div class="spot" style="left:${p.x}%;top:${p.y}%;width:${p.w}%;height:${p.h}%" data-l="${p.l}"><span>${p.l}</span></div>`);
+ (s.exits||[]).forEach(e=>h+=`<div class="exit ${e.side}" data-to="${e.to}">${e.l}</div>`);
+ $('#layer').innerHTML=h;
+ s.units.forEach(u=>{const el=$('#u-'+u.id);if(el&&u.click)el.onclick=u.click});
+ document.querySelectorAll('.spot').forEach(p=>p.onclick=()=>toast(p.dataset.l+' · bu denemede kapalı'));
+ document.querySelectorAll('.exit').forEach(e=>e.onclick=()=>{if(!busy)go(e.dataset.to)});
+ await W8(150);$('#black').classList.remove('on');
+ if(!s.seen){s.seen=1;await W8(700);await say(s.intro)}}
+function bubbleAt(id){const el=$('#u-'+id),b=$('#bubble'),r=el.getBoundingClientRect(),S=st.getBoundingClientRect();
+ const cx=(r.left+r.right)/2-S.left,top=r.top-S.top;b.style.left='';b.style.right='';
+ if(cx<S.width/2)b.style.left=Math.max(10,cx-60)+'px';else b.style.right=Math.max(10,S.width-cx-60)+'px';
+ b.style.bottom=(S.height-top+64)+'px'}
+function say(lines){return new Promise(res=>{busy=true;let i=0;const b=$('#bubble');
+ const show=()=>{if(i>=lines.length){b.classList.remove('on');b.onclick=null;busy=false;res();return}
+  const [who,t]=lines[i++];const nm=who==='hero'?G.name:SC[cur].units.find(u=>u.id===who).name();
+  b.innerHTML=`<b>${nm}</b>${t}<span class="nx">${i<lines.length?'devam ›':'kapat'}</span>`;bubbleAt(who);b.classList.add('on')};
+ b.onclick=show;show()})}
+async function talkMiran(){if(busy||fight)return;
+ if(!G.talked){await say([['miran','Yolcu! Tanrılara şükür, silahlı birisin. Dinle beni, lütfen.'],['miran','Üç gecedir kurtlar ormandan iniyor. Normal kurtlar değil bunlar... gözleri kızıl, derilerinde mor damarlar.'],['hero','Mor damarlar mı? Yolda ağaç köklerinde de aynısını gördüm.'],['miran','Demek orman da hasta. Yol üstündeki kurdu öldürürsen köy bir nefes alır. Karşılığını öderiz, söz.'],['hero','Bakarım. Sen kapını sıkı kapat.']]);G.talked=true;const q=document.querySelector('#u-miran .q');if(q)q.remove();toast('Yeni görev: Ormanlık Yol\'daki kurdu öldür')}
+ else if(!G.wolfDead)await say([['miran','Kurt hâlâ yolda mı? Ormanlık Yol batıda, köyün çıkışından.']]);
+ else await say([['miran','Kurdu öldürdün mü? Gerçekten mi? Bu gece köy rahat uyuyacak.'],['miran','Al, bu senin hakkın. Ama korkarım bu daha başlangıç...']])}
 function log(t){const d=document.createElement('div');d.innerHTML=t;$('#log').prepend(d);while($('#log').children.length>5)$('#log').lastChild.remove()}
 function num(el,t,c){const n=document.createElement('div');n.className='num '+(c||'');n.textContent=t;el.appendChild(n);setTimeout(()=>n.remove(),1100)}
-function upd(){$('#hhp').style.width=H.hp/H.max*100+'%';$('#whp').style.width=Math.max(0,W.hp)/W.max*100+'%';document.querySelector('[data-a=pot] small').textContent=`+40 can · ${pots}`;document.querySelector('[data-a=pot]').disabled=!pots;document.querySelector('[data-a=sh]').disabled=H.mp<15}
+function upd(){$('#hp-hero').style.width=G.hp/G.max*100+'%';$('#mp-hero').style.width=G.mp+'%';const w=$('#hp-wolf');if(w)w.style.width=Math.max(0,W.hp)/W.max*100+'%';
+ document.querySelector('[data-a=pot] small').textContent=`+40 can · ${G.pots}`;document.querySelector('[data-a=pot]').disabled=!G.pots;document.querySelector('[data-a=sh]').disabled=G.mp<15}
 function anim(el,c,ms){el.classList.remove(c);void el.offsetWidth;el.classList.add(c);return W8(ms)}
-$('#wolf').onclick=async()=>{if(fight)return;fight=true;$('#bubble').style.opacity=0;st.classList.add('fight');log('Yozlaşmış Kurt dişlerini gösteriyor!');upd()};
+function startFight(){if(fight||busy)return;fight=true;W={hp:66,max:66,stun:0};$('#log').innerHTML='';st.classList.add('fight');
+ $('#u-hero').style.left='20%';$('#u-wolf').style.left='56%';log('Yozlaşmış Kurt dişlerini gösteriyor!');upd()}
 document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>act(b.dataset.a));
-async function act(a){if(busy||!fight)return;busy=true;const h=$('#hero'),w=$('#wolf');
- if(a==='pot'){pots--;H.hp=Math.min(H.max,H.hp+40);num(h,'+40','');h.querySelector('.num').style.color='#9dff9a';log('İksir içtin. <b>+40 can</b>')}
- else{await anim(h,'lungeR',220);const crit=Math.random()<.15,miss=Math.random()<.12;let d=a==='sh'?R(5,8):R(8,12);if(a==='sh')H.mp-=15;
+async function act(a){if(busy||!fight)return;busy=true;const h=$('#u-hero'),w=$('#u-wolf');
+ if(a==='pot'){G.pots--;G.hp=Math.min(G.max,G.hp+40);num(h,'+40','heal');log('İksir içtin. <b>+40 can</b>')}
+ else{await anim(h,'lungeR',220);const crit=Math.random()<.15,miss=Math.random()<.12;let d=a==='sh'?R(5,8):R(8,12);if(a==='sh')G.mp-=15;
   if(miss){num(w,'ıska','miss');log('Kurt son anda sıçradı. <b>Iska!</b>')}
   else{if(crit)d=Math.round(d*1.8);W.hp-=d;anim(w,'hit',350);num(w,d,crit?'crit':'');log(`${a==='sh'?'Kalkan darbesi':'Kılıç darbesi'}: <b>${d}</b> hasar${crit?' · kritik!':''}`);if(a==='sh'){W.stun=1;log('Kurt sersemledi.')}}
   await W8(260)}
- upd();if(W.hp<=0){w.classList.add('dead');log('Kurt yere yığıldı.');await W8(900);$('#end').classList.add('on');return}
+ upd();if(W.hp<=0){w.classList.add('dead');log('Kurt yere yığıldı.');G.wolfDead=true;await W8(900);$('#end').classList.add('on');return}
  await W8(500);
  if(W.stun){W.stun=0;log('Kurt toparlanmaya çalışıyor...')}
- else{await anim(w,'lungeL',220);const d=R(6,11);H.hp=Math.max(1,H.hp-d);anim(h,'hit',350);num(h,d);log(`Kurt ısırdı: <b>${d}</b> hasar`)}
+ else{await anim(w,'lungeL',220);const d=R(6,11);G.hp=Math.max(1,G.hp-d);anim(h,'hit',350);num(h,d);log(`Kurt ısırdı: <b>${d}</b> hasar`)}
  upd();busy=false}
+$('#endok').onclick=async()=>{$('#end').classList.remove('on');fight=false;busy=false;st.classList.remove('fight');$('#u-hero').style.left='14%';G.mp=100;
+ await W8(500);await say([['hero',G.talked?'Yol temiz. Miran\'a haber vereyim.':'Bu kurt yalnız değildi. Köye gidip sormalıyım.']])};
+go('koy',true);
 </script>
 </body>
 </html>
