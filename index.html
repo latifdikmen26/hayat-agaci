@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hayat Ağacı — İlk Bölüm Prototipi</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%;background:#0b0a08;color:#eadfc4;font-family:'EB Garamond',Georgia,serif;font-size:18px}
@@ -783,8 +783,8 @@ body.talking .hudright{opacity:.2;transition:opacity .2s}
 .world.sidew .tent .spr{transform-origin:50% 100%;animation:sbr 3.4s ease-in-out infinite}
 .world.sidew .tent:nth-child(2n) .spr{animation-duration:2.9s;animation-delay:-1s}
 @keyframes sbr{50%{transform:scale(1.008,1.018)}}
-.world.sidew .tent.mv .spr{animation:swalk .4s ease-in-out infinite}
-@keyframes swalk{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5%)}}
+.world.sidew .tent.mv .spr{animation:swalk .56s linear infinite}
+@keyframes swalk{0%{transform:translateY(0) rotate(0)}25%{transform:translateY(-.9%) rotate(1.2deg)}50%{transform:translateY(0) rotate(0)}75%{transform:translateY(-.9%) rotate(-1.2deg)}100%{transform:translateY(0) rotate(0)}}
 .world.sidew .tent.near .simg{filter:drop-shadow(0 0 5px rgba(255,214,140,.65)) drop-shadow(0 0 1px #000)}
 .world.sidew .tent.mobent.near .simg{filter:drop-shadow(0 0 6px rgba(190,90,255,.8)) drop-shadow(0 0 1px #000)}
 .spark{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,rgba(255,236,170,.95) 0,rgba(255,200,90,.5) 35%,transparent 70%);animation:spk 1.6s ease-in-out infinite;margin-bottom:6px}
@@ -841,6 +841,29 @@ body.talking .hudright{opacity:.2;transition:opacity .2s}
 .cpst{position:relative}
 .lcomp{color:#9fd3ff;font-weight:600}
 .qspr.chest2{transform:none}
+
+/* --- yeni açılış ekranı --- */
+.tbg{background-position:62% 50%;animation:tzoom 50s ease-in-out infinite alternate}
+.tshade{background:linear-gradient(90deg,rgba(10,6,16,.92) 0%,rgba(10,6,16,.78) 26%,rgba(10,6,16,.25) 52%,rgba(10,6,16,0) 70%),linear-gradient(0deg,rgba(6,3,10,.8),transparent 35%),radial-gradient(ellipse at 70% 40%,transparent 40%,rgba(6,3,10,.5) 100%)}
+.tflies i{width:3px;height:3px;border-radius:50%;background:#ffb060;box-shadow:0 0 6px 2px rgba(255,140,50,.55);animation-name:tash;animation-timing-function:linear}
+.tflies i.pu{background:#c890ff;box-shadow:0 0 6px 2px rgba(170,90,255,.5)}
+@keyframes tash{0%{opacity:0;transform:translate(0,0)}15%{opacity:.9}100%{opacity:0;transform:translate(-60px,-70vh)}}
+.tmenu{left:7vw;width:min(560px,44vw);align-items:flex-start}
+.tlogo2{display:flex;flex-direction:column;line-height:.9;opacity:0;animation:tin 1.4s .2s forwards}
+.tlogo2 span{font-family:'Cinzel Decorative','Cinzel',serif;font-weight:900;background:linear-gradient(180deg,#fff4d0 0%,#f2cf7e 38%,#b8823a 62%,#6e4519 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 #1a0d05) drop-shadow(0 0 26px rgba(240,180,80,.28));letter-spacing:.02em}
+.tl1{font-size:clamp(46px,6.2vw,92px)}.tl2{font-size:clamp(56px,7.8vw,118px);margin-left:.5em}
+.tsub{display:flex;align-items:center;gap:14px;margin:22px 0 46px;font-size:clamp(12px,1.1vw,15px);letter-spacing:.32em;text-transform:uppercase;color:#d9c39a}
+.tsub i{display:block;width:46px;height:1px;background:linear-gradient(90deg,transparent,#c99a55)}.tsub i:last-child{transform:scaleX(-1)}
+.tlist{margin-left:0;gap:6px}
+.tb{position:relative;width:auto;min-width:0;background:none;border:0;border-radius:0;padding:8px 0 8px 30px;font-size:clamp(18px,1.7vw,24px);letter-spacing:.14em;text-transform:uppercase;color:#cbbd9f;text-shadow:0 2px 6px #000;transition:color .2s,padding .25s}
+.tb::before{content:'';position:absolute;left:6px;top:50%;width:9px;height:9px;border:1px solid #8a6a44;transform:translateY(-50%) rotate(45deg);transition:all .25s}
+.tb::after{content:'';position:absolute;left:30px;bottom:2px;height:1px;width:0;background:linear-gradient(90deg,#f2cf7e,transparent);transition:width .3s}
+.tb:hover,.tb:focus{background:none;transform:none;color:#fff1cf;padding-left:38px;outline:none}
+.tb:hover::before,.tb:focus::before{background:#f2cf7e;border-color:#fff1cf;box-shadow:0 0 10px #f2cf7e}
+.tb:hover::after,.tb:focus::after{width:calc(100% - 30px)}
+.tb small{text-transform:none;letter-spacing:.02em;font-size:14px;color:#a99a80}
+.tver{position:absolute;left:7vw;bottom:22px;margin:0;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#6f6458}
+@media(max-width:700px){.tmenu{left:6vw;width:88vw}.tb{width:auto}}
 </style>
 </head>
 <body>
@@ -1052,13 +1075,13 @@ function stage(bg,inner,fire,cls){return `<div class="stage ${bg} ${cls||''}">${
 function parasHTML(arr,step=.55){return arr.map((p,i)=>`<p style="animation-delay:${(i*step).toFixed(2)}s">${p}</p>`).join('')}
 function renderTitle(){
  const auto=readSave('auto'),has=auto&&auto.g&&auto.g.v===2;
- const flies=Array.from({length:18},()=>`<i style="left:${(35+Math.random()*60).toFixed(1)}%;top:${(35+Math.random()*50).toFixed(1)}%;animation-delay:-${(Math.random()*6).toFixed(2)}s;animation-duration:${(4+Math.random()*4).toFixed(2)}s"></i>`).join('');
+ const flies=Array.from({length:26},(_,i)=>`<i class="${i%3?'':'pu'}" style="left:${(30+Math.random()*68).toFixed(1)}%;bottom:${(-5+Math.random()*30).toFixed(1)}%;animation-delay:-${(Math.random()*14).toFixed(2)}s;animation-duration:${(10+Math.random()*8).toFixed(2)}s"></i>`).join('');
  app.innerHTML=`<div class="tscr"><div class="tbg"></div><div class="tshade"></div><div class="tflies">${flies}</div>
-  <div class="tmenu"><img class="tlogo" src="a/logo.png" alt="Hayat Ağacı">
-   <div class="tsub">Birinci Bölüm · Zehrin İlk İzleri</div>
+  <div class="tmenu"><div class="tlogo2"><span class="tl1">Hayat</span><span class="tl2">Ağacı</span></div>
+   <div class="tsub"><i></i>Birinci Bölüm · Zehrin İlk İzleri<i></i></div>
    <div class="tlist">${has?`<button class="tb" id="cont">Devam Et<small>${auto.g.name} · ${CLASSES[auto.g.cls].ad} · Sv ${auto.g.level}</small></button>`:''}
     <button class="tb" id="go">Yeni Oyun</button><button class="tb" id="tset">Ayarlar</button><button class="tb" id="tcred">Yapımcılar</button></div>
-   <div class="tver">Demo sürümü · v0.3</div></div></div>`;
+   </div><div class="tver">Demo sürümü · v0.4</div></div>`;
  $('go').onclick=()=>{resetGame();renderProlog(0)};
  if($('cont'))$('cont').onclick=()=>loadFrom('auto');
  $('tset').onclick=()=>openPanel('ayar');
