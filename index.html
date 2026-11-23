@@ -322,7 +322,7 @@ body.dragging [data-sel^="eq:"]{outline:1px dashed #c99a55}.dropok{outline:2px s
 .field.bg-cave .far,.field.bg-cave .mid{display:none}
 .field.bg-cave .ground{background:linear-gradient(#3a2e22,#21190f)}
 .tscr{position:fixed;inset:0;overflow:hidden;background:#0b1220}
-.tbg{position:absolute;inset:0;background:url(a/acilis.webp) 60% 50%/cover no-repeat;image-rendering:pixelated;animation:tzoom 40s ease-in-out infinite alternate}
+.tbg{position:absolute;inset:0;background:url(a/acilis.webp) 60% 50%/cover no-repeat;animation:tzoom 40s ease-in-out infinite alternate}
 @keyframes tzoom{to{transform:scale(1.05)}}
 .tshade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,10,20,.82) 0%,rgba(6,10,20,.55) 30%,rgba(6,10,20,0) 55%),linear-gradient(0deg,rgba(0,0,0,.35),transparent 30%)}
 .tflies i{position:absolute;width:4px;height:4px;background:#ffd86a;border-radius:1px;box-shadow:0 0 8px 2px rgba(255,200,80,.7);animation:tfly 6s ease-in-out infinite;opacity:0}
@@ -402,8 +402,8 @@ body.dragging [data-sel^="eq:"]{outline:1px dashed #c99a55}.dropok{outline:2px s
 .csum span{display:block;font-size:12px;color:#9c8460;font-family:'Cinzel',serif}.csum b{color:#f0d79a}
 .cnav{display:flex;justify-content:space-between;margin-top:18px;position:sticky;bottom:-10px;padding:8px 0 4px;background:linear-gradient(transparent,#1e160c 35%)}.btn.ghost{background:transparent;border-color:#6b5030;color:#c9a874}
 .cscene{position:fixed;inset:0;background:#07090a;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.cstage{position:relative;background:#07090a url(a/yaratma_bg.webp) center/cover no-repeat;image-rendering:pixelated}
-.cped{position:absolute;left:3%;width:39%;top:8%;height:84%;pointer-events:none}
+.cstage{position:relative;background:#07090a url(a/yaratma_bg.webp) center/cover no-repeat}
+.cped{position:absolute;left:11.2%;width:39%;top:10.3%;height:84%;pointer-events:none}
 .cped .cprev{background:none;border:0;padding:0;height:100%;position:relative;pointer-events:auto}
 .cped .cpst{position:absolute;left:0;right:0;top:0;height:66%;background:radial-gradient(ellipse at 50% 96%,rgba(255,210,120,.35),transparent 45%);border-radius:0}
 .cped .cpw{zoom:var(--cz,2.2)}.cped .cpsh{display:none}
@@ -840,6 +840,7 @@ body.talking .hudright{opacity:.2;transition:opacity .2s}
 .cpside{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);height:calc(var(--cz,2) * 92px);width:auto;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}
 .cpst{position:relative}
 .lcomp{color:#9fd3ff;font-weight:600}
+.qspr.chest2{transform:none}
 </style>
 </head>
 <body>
@@ -1148,11 +1149,11 @@ function artSrc(src){return src}
 /* ===================== KARAKTER YARATMA (adım adım) ===================== */
 const CSTEPS=[['irk','Irk ve Cinsiyet'],['sinif','Sınıf'],['isim','İsim'],['onay','Onay']];
 let CST=0,CDIR=0,CPRE=null;
-function renderCreate(){CST=0;G.sex='e';G.race='insan';G.hair=G.hair||0;G.hs=G.hs||0;drawCreate()}
+function renderCreate(){CST=0;G.sex=G.sex||'e';G.race=G.race||'insan';G.hair=G.hair||0;G.hs=G.hs||0;drawCreate()}
 function fitCreate(){const st=$('cstage');if(!st)return;const W=innerWidth,H=innerHeight,stack=W/H<1.55;st.classList.toggle('stack',stack);
  if(!stack){const cp=$('cped');if(cp)cp.removeAttribute('style');const w=Math.min(W,H*16/9),h=w*9/16;st.style.width=w+'px';st.style.height=h+'px';st.style.backgroundSize='';st.style.backgroundPosition='';st.style.setProperty('--cz',(w/1920*2.6).toFixed(3));return}
  st.style.width=W+'px';st.style.height=H+'px';const topH=H*.46,sc=Math.max(W/1920,H/1080,topH*1.15/1080);
- let bx=W/2-432*sc,by=topH*.66-670*sc;bx=Math.min(0,Math.max(W-1920*sc,bx));by=Math.min(0,by);
+ let bx=W/2-590*sc,by=topH*.66-710*sc;bx=Math.min(0,Math.max(W-1920*sc,bx));by=Math.min(0,by);
  st.style.backgroundSize=`${1920*sc}px ${1080*sc}px`;st.style.backgroundPosition=`${bx}px ${by}px`;{const cp=$('cped'),fx=432*sc+bx,fy=670*sc+by,cw=Math.max(300,W*.42);if(cp){cp.style.width=cw+'px';cp.style.left=(fx-cw/2)+'px';cp.style.top=(fy-topH*.66)+'px';cp.style.height=topH+'px'}}st.style.setProperty('--cz',Math.min(2.4,Math.max(1.1,topH/128*.42)).toFixed(3))}
 addEventListener('resize',fitCreate);
 function prevHTML(){const w=heroW(),d=WSD[w],sk=sideKey(w),si=sk&&SIMG[sk];return `<div class="cprev"><div class="cpst">${si?`<img class="cpside" src="${si[0]}" alt="">`:''}<div class="wsp cpw" data-w="${w}" style="width:${d[0]}px;height:${d[1]}px;background-image:url(${artSrc('a/wc/'+w+'.webp')});background-size:${d[0]*6}px ${d[1]*3}px"></div><div class="cpsh"></div></div>
@@ -1167,8 +1168,8 @@ function statHTML(){const tmp={...G,cl:{[G.cls]:{lv:1,cp:0}},eq:{}};const C=CLAS
   <div class="sklist">${C.skills.filter(k=>k.act).map(k=>`<div class="sk lock"><span class="sl">Sv ${k.lv}</span> ${ICO(k.id)||k.ic} <b>${k.ad}</b> <i>${k.mp} MP</i><small>${k.desc}</small></div>`).join('')}</div>`}
 function stepHTML(){const s=CSTEPS[CST][0];
  if(s==='irk')return `<h2>Irkın ve cinsiyetin</h2><p class="note">Irk ve cinsiyet stat vermez; görünüşünü ve hikâyedeki kökenini belirler. Her ırk her sınıfı seçebilir.</p>
-  <div class="copts two sexrow">${Object.entries(SEX).map(([k,a])=>`<div class="copt ${k===G.sex?'sel':''} ${k!=='e'?'soon':''}" ${k!=='e'?'':`data-set="sex" data-v="${k}"`}><b>${a}</b>${k!=='e'?'<em>Yakında</em>':''}</div>`).join('')}</div>
-  <div class="copts">${Object.entries(RACES).map(([k,r])=>`<div class="copt ${k===G.race?'sel':''} ${k!=='insan'?'soon':''}" ${k!=='insan'?'':`data-set="race" data-v="${k}"`}><b>${r.ad}</b><small>${r.desc}</small>${k!=='insan'?'<em>Yakında · çizimi hazırlanıyor</em>':''}</div>`).join('')}</div>`;
+  <div class="copts two sexrow">${Object.entries(SEX).map(([k,a])=>`<div class="copt ${k===G.sex?'sel':''}" data-set="sex" data-v="${k}"><b>${a}</b></div>`).join('')}</div>
+  <div class="copts">${Object.entries(RACES).map(([k,r])=>`<div class="copt ${k===G.race?'sel':''}" data-set="race" data-v="${k}"><b>${r.ad}</b><small>${r.desc}</small></div>`).join('')}</div>`;
  if(s==='cins')return `<h2>Cinsiyet</h2><p class="note">Yalnızca görünüşü değiştirir; oynanışa etkisi yoktur.</p>
   <div class="copts two">${Object.entries(SEX).map(([k,a])=>`<div class="copt big ${k===G.sex?'sel':''}" data-set="sex" data-v="${k}"><b>${a}</b></div>`).join('')}</div>`;
  if(s==='gorunum'){const ly=layerOf(),sty=ly?SACLAR.map(x=>x[1]):HSTYLE[G.sex],row=(k,lab,val,sw)=>`<div class="arow"><span class="alab">${lab}</span><button class="abtn" data-arr="${k}" data-d="-1">‹</button><div class="aval">${sw?`<i class="asw" style="background:${sw}"></i>`:''}${val}</div><button class="abtn" data-arr="${k}" data-d="1">›</button></div>`;
@@ -1384,7 +1385,7 @@ function startBattle(s,onEnd,keys0){setTimeout(()=>{const h=document.getElementB
   <div class="field ${SBT?'sidef':s.art?'bgart':s.bg}" id="field" ${SBT?`style="--fbg:url(${M.def.img})"`:s.art?`style="background-image:url(${s.art})"`:''}>${SBT?`<div class="sbt"><div class="hk">${s.kicker||M.def.title}</div><div class="ht">${s.title||''}</div></div>`:''}<div class="bhint" id="hint"></div><div class="far"></div><div class="mid"></div>${s.fire?'<div class="glow"></div>':''}<div class="ground"></div>
    ${s.fire?`<div class="campfire">${fireSVG()}</div>`:''}
    ${party.map((u,i)=>unitHTML(u,px[i])).join('')}${enemies.map((u,i)=>unitHTML(u,ex[i])).join('')}
-   ${G.pet?`<div class="petb" id="pet">${SBT?'<div class="ember"></div>':spr('pet','idle')}</div>`:''}${party.length>1?'<button class="btn mini swapb" id="swapb" title="Öndeki daha çok saldırı alır. Ağır darbeler her zaman öndekine gelir.">⇄ Yer değiştir</button>':''}</div>
+   ${G.pet?`<div class="petb" id="pet">${SBT?'<div class="simgb"><img src="a/s/kor.webp" alt="" style="height:calc(11 * 1cqh)"></div>':spr('pet','idle')}</div>`:''}${party.length>1?'<button class="btn mini swapb" id="swapb" title="Öndeki daha çok saldırı alır. Ağır darbeler her zaman öndekine gelir.">⇄ Yer değiştir</button>':''}</div>
   <div class="log ${OPT.log?'':'hide'}" id="log"></div>
   <div class="hotbar" id="hotbar"></div></div>`,null,'gamestage');
  document.querySelectorAll('.unit.foe').forEach(el=>el.onclick=()=>pickTarget(el.dataset.uid));
@@ -1921,7 +1922,7 @@ function qHit(k,txt){for(const id in QUESTS){const q=QUESTS[id],s=qState(id);if(
 const QOBJ={forest:[{id:'pk1',q:'kok4',k:'kok',x:2400,y:576},{id:'pk2',q:'kok4',k:'kok',x:3048,y:576}],
  tunel:[{id:'pk3',q:'kok4',k:'kok',x:1080,y:480},{id:'pk4',q:'kok4',k:'kok',x:2280,y:504}]};
 const QZONE={kuzey:[{r:[3150,380,500,420],q:'cekic',k:'yer',run:async()=>{await say([['hero','Yolun kenarında, otların arasında yarı gömülü demir kuşaklı bir sandık…','thought']]);qHit('yer','Sandık bulundu, mührünü çöz ·');addEnt(chestEnt())}}]};
-function chestEnt(){const c=(SIDE.kuzey&&SIDE.kuzey.chest)||[3360,576];return{id:'sandik',name:'Mühürlü Sandık',x:c[0],y:c[1],svg:'<div class="qspr chest"></div>',cls:'item qobj',verb:'Aç',talkR:120,quest:()=>true,talk:openChest}}
+function chestEnt(){const c=(SIDE.kuzey&&SIDE.kuzey.chest)||[3360,576];return{id:'sandik',name:'Mühürlü Sandık',x:c[0],y:c[1],svg:M&&M.def&&M.def.side?'<img class="simg qspr chest2" src="a/s/sandik.webp" alt="" style="height:140px">':'<div class="qspr chest"></div>',cls:'item qobj',verb:'Aç',talkR:120,quest:()=>true,talk:openChest}}
 function qObjEnts(key){const out=[];(QOBJ[key]||[]).forEach(o=>{if(qActive(o.q)&&!G.f['qo_'+o.id])out.push({id:o.id,name:'Parlayan Kök',x:o.x,y:o.y,svg:'<div class="qspr kok"></div>',cls:'item qobj',verb:'Topla',talkR:110,quest:()=>true,
   talk:async()=>{await say([['hero','Kökün ucunu dikkatle kesip keseye koydum. Elimde hâlâ hafifçe atıyor.','thought']]);G.f['qo_'+o.id]=1;removeEnt(o.id);qHit(o.k,'Parlayan Kök ·')}})});
  if(key==='kuzey'&&qActive('cekic')&&qState('cekic').n.yer&&!qState('cekic').n.sandik)out.push(chestEnt());return out}
@@ -1938,7 +1939,7 @@ function runePuzzle(){return new Promise(res=>{for(const k in keys)keys[k]=false
  o.querySelectorAll('.rune').forEach(b=>b.onclick=()=>{const i=+b.dataset.r;seq.push(i);b.classList.add('on');const k=seq.length-1;
   if(seq[k]!==ans[k]){o.querySelector('#rmsg').textContent='Rünler sönüyor… sıra yanlış. Yeniden dene.';seq.length=0;setTimeout(()=>o.querySelectorAll('.rune').forEach(x=>x.classList.remove('on')),350);return}
   if(seq.length===ans.length){o.querySelector('#rmsg').textContent='Mühür çözüldü!';setTimeout(()=>end(true),600)}})})}
-async function openChest(){const ok=await runePuzzle();if(!ok)return;const ce=document.querySelector('#n-sandik .qspr');if(ce)ce.classList.add('open');await new Promise(r=>setTimeout(r,700));removeEnt('sandik');
+async function openChest(){const ok=await runePuzzle();if(!ok)return;const ce=document.querySelector('#n-sandik .qspr');if(ce)ce.classList.add('open');if(ce&&ce.tagName==='IMG')ce.style.filter='brightness(1.6) drop-shadow(0 0 12px #ffd27a)';await new Promise(r=>setTimeout(r,700));removeEnt('sandik');
  await say([['hero','Kapak gıcırdayarak açıldı. İçinde yağlı bir beze sarılmış, ağır bir çekiç.','thought']]);qHit('sandik','Çekiç alındı ·')}
 function qKill(keys){keys.forEach(k=>{for(const id in QUESTS){const s=qState(id);if(!s||s.st!=='active'||!(QUESTS[id].kill||{})[k])continue;
   const before=qReady(id);s.n[k]=(s.n[k]||0)+1;if(!before&&qReady(id))setTimeout(()=>toast(`📜 ${QUESTS[id].ad}: tamamlandı! Ödül için ${QUESTS[id].giverName||'görevi veren kişiye'} dön.`),1600)}})}
@@ -2006,13 +2007,14 @@ function mobTick(t){if(!M.mobPts)return;const now=Date.now(),h=M.hero;
    x = soldan sağa, y = ayakların zemindeki derinliği (G0 = en geri, YMAX = en ön). */
 const SW=1920,SCH=1080,YMAX=960;
 const SIMG={ // görsel anahtarı -> [dosya, en öndeki boy (px), görselin baktığı yön]
+ h_cuce_e_efsuncu:['a/s/h_cuce_e_efsuncu.webp',320,'R'],h_cuce_e_golge:['a/s/h_cuce_e_golge.webp',320,'R'],h_cuce_e_kabadayi:['a/s/h_cuce_e_kabadayi.webp',320,'R'],h_cuce_k_efsuncu:['a/s/h_cuce_k_efsuncu.webp',315,'R'],h_cuce_k_golge:['a/s/h_cuce_k_golge.webp',315,'R'],h_cuce_k_kabadayi:['a/s/h_cuce_k_kabadayi.webp',315,'R'],h_elf_e_efsuncu:['a/s/h_elf_e_efsuncu.webp',440,'R'],h_elf_e_golge:['a/s/h_elf_e_golge.webp',440,'R'],h_elf_e_kabadayi:['a/s/h_elf_e_kabadayi.webp',440,'R'],h_elf_k_efsuncu:['a/s/h_elf_k_efsuncu.webp',425,'R'],h_elf_k_golge:['a/s/h_elf_k_golge.webp',425,'R'],h_elf_k_kabadayi:['a/s/h_elf_k_kabadayi.webp',425,'R'],h_insan_e_kabadayi:['a/s/h_insan_e_kabadayi.webp',430,'R'],h_insan_k_efsuncu:['a/s/h_insan_k_efsuncu.webp',415,'R'],h_insan_k_golge:['a/s/h_insan_k_golge.webp',415,'R'],h_insan_k_kabadayi:['a/s/h_insan_k_kabadayi.webp',415,'R'],h_ork_e_efsuncu:['a/s/h_ork_e_efsuncu.webp',460,'R'],h_ork_e_golge:['a/s/h_ork_e_golge.webp',460,'R'],h_ork_e_kabadayi:['a/s/h_ork_e_kabadayi.webp',460,'R'],h_ork_k_efsuncu:['a/s/h_ork_k_efsuncu.webp',440,'R'],h_ork_k_golge:['a/s/h_ork_k_golge.webp',440,'R'],h_ork_k_kabadayi:['a/s/h_ork_k_kabadayi.webp',440,'R'],h_insan_e_efsuncu:['a/s/h_insan_e_efsuncu.webp',430,'R'],h_insan_e_golge:['a/s/h_insan_e_golge.webp',430,'R'],kor:['a/s/kor.webp',120,'R'],sandik:['a/s/sandik.webp',150,'R'],
  kahraman_kabadayi:['a/s/kahraman_kabadayi.webp',430,'R'],kahraman_efsuncu:['a/s/kahraman_efsuncu.webp',430,'R'],kahraman_golge:['a/s/kahraman_golge.webp',430,'R'],
  doran:['a/s/doran.webp',450,'R'],miran:['a/s/miran.webp',405,'L'],elci:['a/s/elci.webp',420,'R'],muhafiz:['a/s/muhafiz.webp',305,'L'],
  hanci:['a/s/hanci.webp',405,'R'],ors:['a/s/ors.webp',300,'L'],iksirci:['a/s/iksirci.webp',410,'R'],
  kurt:['a/s/kurt.webp',225,'L'],alfa:['a/s/alfa.webp',330,'L'],goblin:['a/s/goblin.webp',250,'L'],reis:['a/s/reis.webp',420,'L'],ayi:['a/s/ayi.webp',520,'L'],kok:['a/s/kok.webp',120,'L']};
 const WMAP={npc_konsey_elcisi:'elci',npc_cuce_muhafiz:'muhafiz',npc_telasli_koylu:'miran',npc_hanci:'hanci',npc_cuce_demirci:'ors',npc_iksirci_elf:'iksirci',
  yoldas_savasci:'doran',yozlasmis_kurt:'kurt',alfa_kurt:'alfa',goblin:'goblin',goblin_reisi:'reis',ayi:'ayi'};
-function sideKey(w){if(!w)return null;if(w.startsWith('kahraman')){const c=(w.match(/_(kabadayi|efsuncu|golge)/)||[])[1]||(G&&G.cls)||'kabadayi';return 'kahraman_'+c}return WMAP[w]||null}
+function sideKey(w){if(!w)return null;if(w.startsWith('kahraman')){const c=(w.match(/_(kabadayi|efsuncu|golge)/)||[])[1]||(G&&G.cls)||'kabadayi',k='h_'+(G.race||'insan')+'_'+(G.sex||'e')+'_'+c;return SIMG[k]?k:'kahraman_'+c}return WMAP[w]||null}
 const SIDE={
  gate:{bg:'a/s/bg_baskent.webp',G0:745,start:[260,900],
   pos:{elci:[1010,860],muhafiz:[1420,880],carsi:[430,820]},
@@ -2140,7 +2142,7 @@ function entZ(e){if(e.w)return 1;return e.z||(e.svg&&e.svg.indexOf('class="spx')
 function entHTML(e){
  if(M&&M.def&&M.def.side&&!e._sd){e._sd=1;const sv=e.w?sideSvg(e):null;
   if(sv){e.svg=sv;e.top=0;e.side=1;e.face=e.dir==='sol'?-1:e.dir==='sag'?1:(e.id==='hero'||e.follow?1:-1)}
-  else if(e.w==='kor_yavrusu'||e.id==='pet'){e.svg='<div class="ember"></div>';e.w=null}
+  else if(e.w==='kor_yavrusu'||e.id==='pet'){e.svg='<img class="simg" src="a/s/kor.webp" alt="" style="height:105px">';e.w=null;e.side=1;e.face=1}
   else if(e.w==='kamp_atesi'){e.svg='<div class="campfx"></div>';e.w=null}
   else if(e.svg&&e.svg.includes('qspr kok')){e.svg='<img class="simg" src="a/s/kok.webp" alt="" style="height:110px">'}
   else if(!e.svg&&e.cls&&e.cls.includes('item')){e.svg='<div class="spark"></div>'}}
@@ -2399,7 +2401,7 @@ function hotbarInner(){
  return `${inB?'':'<!--'}<div class="hbxp"><div class="xpl" title="Karakter XP"><i style="width:${xpP}%"></i><span>${IK('ui_xp','ik18')} Karakter Sv ${G.level} · ${G.xp} / ${F.xpNext(G.level)} XP</span></div>
    <div class="xpl cls" title="Sınıf puanı"><i style="width:${cpP}%"></i><span>${C.ic} ${C.ad} Sv ${cl.lv} · ${nx?cl.cp+' / '+nx+' puan':'en üst seviye'}</span></div></div>${inB?'':'-->'}
   <div class="hbrow">
-   <div class="hbleft"><div class="pf" ${inB?'':'data-m="kar" title="Karakter (C)"'}><div class="pfc">${(()=>{const k=sideKey(heroW());const pp=k&&k.startsWith('kahraman_')&&G.race==='insan'&&G.sex!=='k'?'a/s/portre_'+k.slice(9)+'.webp':null;return pp?`<img class="pfimg" src="${pp}" alt="">`:spr(heroKey(),'idle')})()}</div><b class="plv">${inB?'':'Sv '}${G.level}</b></div>
+   <div class="hbleft"><div class="pf" ${inB?'':'data-m="kar" title="Karakter (C)"'}><div class="pfc">${(()=>{const k=sideKey(heroW());const pp=k&&k.startsWith('h_')?'a/s/portre_'+k+'.webp':null;return pp?`<img class="pfimg" src="${pp}" alt="">`:spr(heroKey(),'idle')})()}</div><b class="plv">${inB?'':'Sv '}${G.level}</b></div>
     <div class="pbars"><div class="pn">${G.name} <small>${C.ad}</small></div>
      <div class="rbar hp"><i style="width:${h.hp/h.maxHp*100}%"></i><span>${h.hp} / ${h.maxHp}</span></div>
      <div class="rbar mp"><i style="width:${h.mp/h.maxMp*100}%"></i><span>${h.mp} / ${h.maxMp}</span></div>
